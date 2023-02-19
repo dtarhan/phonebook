@@ -33,10 +33,12 @@ function App() {
           payload: "Serverda bir hata oluştu",
         });
       });
+    /* edit person */
     
-    
-      
-      
+
+
+
+
   }, []);
 
   if (personsState.success === false)

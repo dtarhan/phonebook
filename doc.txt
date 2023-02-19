@@ -1,4 +1,4 @@
-Phone Record Guide
+Phone Book Guide
 
 Dependencies:
   a) json-server

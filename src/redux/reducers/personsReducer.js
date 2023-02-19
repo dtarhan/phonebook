@@ -1,5 +1,6 @@
 import actionTypes from "../actions/actionTypes";
 
+
 const initialState = {
     pending: false,
     success: false,
@@ -8,7 +9,9 @@ const initialState = {
     error: ""
 }
 
+
 const personsReducer = (state = initialState, action) => {
+
     switch (action.type) {
         case actionTypes.personActions.GET_PERSONS_START:
             return {
@@ -53,40 +56,27 @@ const personsReducer = (state = initialState, action) => {
                 fail: true,
                 error: action.payload
             }
-        case actionTypes.personActions.EDIT_PERSON_START:
-            return {
-                ...state,
-                pending: true
-            }
-        case actionTypes.personActions.EDIT_PERSON_SUCCESS:
-            var updatedPerson = []
-            for (let i = 0; i < state.persons.length; i++) {
-                if (state.persons[i].id === action.payload.id) {
-                    updatedPerson.push(action.payload)
-                } else {
-                    updatedPerson.push(state.persons[i])
-                }
-            }
-            return {
-                ...state,
-                pending: false,
-                success: true,
-                fail: false,
-                persons: [...state.persons, updatedPerson]
-            }
-            
-        case actionTypes.personActions.EDIT_PERSON_FAIL:
-            return {
-                ...state,
-                pending: false,
-                success: false,
-                fail: true,
-                error: action.payload
-            }
+
+
         case actionTypes.personActions.ADD_PERSON:
             return {
                 ...state,
                 persons: [...state.persons, action.payload]
+            }
+        case actionTypes.personActions.EDIT_PERSON:
+            let temp = []
+            for (let i = 0; i < state.persons.length; i++) {
+                if (state.persons[i].id !== action.payload.id) {
+                    temp.push(state.persons[i])
+                } else {
+                    temp.push(action.payload)
+                }
+            }
+            //var filteredBooks=state.books.filter(item=>item.id !== action.payload.id)
+
+            return {
+                ...state,
+                persons: temp
             }
         default:
             return state

@@ -71,7 +71,7 @@ const ListPersons = () => {
                     className="btn btn-danger">
                     Delete
                   </button>
-                  <Link  to={`/edit-student/${personsState.persons.id}`} className="btn btn-primary">Edit</Link>
+                  <Link  to={`/edit-person/${person.id}`} className="btn btn-primary">Edit</Link>
                   
                   
                 </td>
