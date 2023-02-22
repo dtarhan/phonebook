@@ -3,17 +3,39 @@ Phone Book Guide
 Dependencies:
   a) json-server
   b) axios
-  c) Redux
+  c) redux (state management) (redux,react-redux)
   d) React router dom
+
+  Phone Book App
 
  İş Sırası:
    1) Veri Yapısı ve ilişkelerin kurulması (json-server Yapısı) 
    2) Global bir axios dosyası oluşturma
    3) Redux yapısı oluşturma (Store taşınacak state'ler)
      a) src altında redux isimli klasor oluşturulur. ve redux altında store.js
-       adlı dosya olur. redux kalaörünün altında actions isimli bir klasor oluşturulur
+       adlı dosya olur. redux klasörünün altında actions isimli bir klasor oluşturulur
        ve içinde actionTypes.js olur.
      b) src içinde reducers adlı klasor oluşturma ve store içerisinde kaç tane state
       olacak ise her bir state için ayrı bir reducer yazılması.
    4) Router yapısının kurulması
       App.js de BrowserRouter, Routes, Router tanımlanır.   
+
+   5)UI kütüphanesi olarak bootstrap kullanılacak 
+
+    
+   6)  Güncelleme işlemi:
+        a. Hangi kişinin güncelleme butonuna tıklanırsa o kişi ile ilgili
+        ayırt edici bir bilgi ilgili sayfaya taşınır. (URL ile)
+        b. URL içerisinden kişiye ait bilgi okunur (constructor kısmında)
+        c. URL'den okunan bilgiye göre ilgili kişi bilgisi getirilir.
+        (store'da bulunan personsState kullanılabilir.)
+        d. İlgili kişi bulunduktan sonra form için başlangıç state'i
+        olarak atanır.
+        e. ardından form kontrol edilir. (onSubmit)
+        f. validation sonrasında kişinin güncellenmesi gerektiğine emin olduktan
+        sonra önce api call ile (put) kitabın server tarafında güncellendiğinden
+        emin olmalıyız.
+        g. Emin olduktan sonra client tarafta store'umuzu güncelleyebiliriz.
+        (redux işleyişi)
+        h. dispatch işleminden sonra anasayfaya yönlendir.
+
