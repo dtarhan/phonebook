@@ -6,29 +6,33 @@ import { useSelector, useDispatch } from "react-redux";
 import api from "../api/api";
 import urls from "../api/urls";
 import actionTypes from "../redux/actions/actionTypes";
-
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import CustomModal from "./CustomModal";
 
 
 
 const ListPersons = () => {
   const dispatch = useDispatch();
   const { personsState } = useSelector((state) => state);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [willDeletePerson, setWillDeletePerson] = useState("");
 
-  const [willDeletePerson, setWillDeletePerson] = useState(false)
+ /* const [willDeletePerson, setWillDeletePerson] = useState(false)*/
 
-  /*const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState("");
   const [filteredPersons, setFilteredPersons] = useState(personsState.persons);
+  const navigate=useNavigate();
 
   useEffect(() => {
-    console.log(searchText);
+   /* console.log(searchText);*/
     const temp = personsState.persons.filter(
       (item) =>
         item.name.toLowerCase().includes(searchText.toLowerCase()) === true ||
         item.surname.toLowerCase().includes(searchText.toLowerCase()) === true
     );
     setFilteredPersons(temp);
-  }, [searchText]);*/
+  }, [searchText,personsState]);
 
   const deletePerson = (id) => {
     dispatch({ type: actionTypes.personActions.DELETE_PERSON_START });
@@ -38,7 +42,9 @@ const ListPersons = () => {
         dispatch({
           type: actionTypes.personActions.DELETE_PERSON_SUCCESS,
           payload: id,
+          
         });
+        navigate("/");
       })
       .catch((err) => {
         dispatch({
@@ -49,8 +55,16 @@ const ListPersons = () => {
   };
 
   return (
-    <div className="my-5">
-      <div className="d-flex justify-content-end mx-5">
+    <div className="container my-5">
+      <div className="d-flex justify-content-between">
+
+      <input
+          className="form-control w-75"
+          type="text"
+          placeholder="Aramak istediğiniz kişinin ismini girin..."
+          value={searchText}
+          onChange={(event) => setSearchText(event.target.value)}
+        />
         
         <Link to={"/add-person"} className="btn btn-primary">Add Person</Link>
       </div>
@@ -66,10 +80,10 @@ const ListPersons = () => {
           </tr>
         </thead>
         <tbody>
-          {personsState.persons.map((person, index) => {
+          {filteredPersons.map((person, index) => {
 
             return (
-              <tr key={index}>
+              <tr key={person.id}>
                 <th scope="row">{index + 1}</th>
                 <td>{person.name}</td>
                 <td>{person.surname}</td>
@@ -78,9 +92,8 @@ const ListPersons = () => {
                 <td>
                   <button
                     onClick={() => {
-                      deletePerson(person.id)
-
-                      setWillDeletePerson(true)
+                      setShowDeleteModal(true);
+                      setWillDeletePerson(person.id)
                     }}
                     className="btn btn-danger">
                     Delete
@@ -94,6 +107,19 @@ const ListPersons = () => {
           })}
         </tbody>
       </table>
+      {showDeleteModal === true && (
+        <CustomModal
+          title="Silme"
+          message="Silmek istediğinize emin misiniz?"
+          onCancel={() => setShowDeleteModal(false)}
+          onConfirm={() => {
+            deletePerson(willDeletePerson);
+            setShowDeleteModal(false);
+            navigate("/")
+
+          }}
+        />
+      )}
 
     </div>
   );
@@ -101,10 +127,3 @@ const ListPersons = () => {
 
 export default ListPersons;
 
-/*<input
-          className="form-control w-75"
-          type="text"
-          placeholder="Aramak istediğiniz kişinin ismini girin..."
-          value={searchText}
-          onChange={(event) => setSearchText(event.target.value)}
-        />*/
